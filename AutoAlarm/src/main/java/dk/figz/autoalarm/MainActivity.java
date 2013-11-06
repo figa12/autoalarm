@@ -23,7 +23,9 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        processCalendarResults(readCalendar());
+        Cursor hest = readCalendar();
+        processCalendarResults(hest);
+
 
     }
 
@@ -71,14 +73,15 @@ public class MainActivity extends Activity {
         Uri uri = CalendarContract.Calendars.CONTENT_URI;
         String selection = "((" + CalendarContract.Calendars.ACCOUNT_NAME + " = ?) AND ("
                 + CalendarContract.Calendars.ACCOUNT_TYPE + " = ?))";
-        String[] selectionArgs = new String[] {"figa.figa@gmail.com", "com.google",
-                "figa.figa@gmail.com"};
+        String[] selectionArgs = new String[] {"figa.figa@gmail.com", "com.google"};
         // Submit the query and get a Cursor object back.
         return cur = cr.query(uri, EVENT_PROJECTION, selection, selectionArgs, null);
      }
 
     public void processCalendarResults(Cursor cur) {
         // Use the cursor to step through the returned records
+
+        TextView view = (TextView) findViewById(R.id.debug_text);
         while (cur.moveToNext()) {
             long calID = 0;
             String displayName = null;
@@ -92,8 +95,8 @@ public class MainActivity extends Activity {
             ownerName = cur.getString(PROJECTION_OWNER_ACCOUNT_INDEX);
 
             // Do something with the values...
-            TextView view = (TextView) findViewById(R.id.debug_text);
-            view.setText(String.valueOf(calID));
+
+            view.append(displayName);
         }
     }
 
